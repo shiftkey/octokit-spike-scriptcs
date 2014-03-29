@@ -10,7 +10,8 @@ foreach (var repository in repositories)
 	    || name.StartsWith("repo-to-delete-")
 		|| name.StartsWith("repo-with-")
 		|| name.StartsWith("repo-without-")
-		|| name.StartsWith("private-repo-"))
+		|| name.StartsWith("private-repo-")
+		|| name.StartsWith("source-repo-"))
    {
        var login = repository.Owner.Login;
        Console.WriteLine("Deleting repository {0}/{1}", login, name);
