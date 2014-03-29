@@ -4,12 +4,24 @@ var github = octokit.CreateWithBasicAuth("shiftkey-nuke-test-projects", "shiftke
 var repositories = github.Repository.GetAllForCurrent().Result;
 foreach (var repository in repositories)
 {
-   Console.WriteLine("Checking repository: " + repository.Name);
+   // TODO: "master_branch" doesn't exist, fix this hack later
+   // TODO: we could surface the "size" property to see if this repository is empty
+   //       for the moment, we throw an exception because reasons
 
-   var tree = github.GitDatabase.Tree.Get(repository.Owner.Login, repository.Name, repository.MasterBranch);
-
-   if (false)
+   try
    {
-     // hey, the repo doesn't have a LICENSE file at the root!
+     var response = github.GitDatabase.Tree.Get(repository.Owner.Login, repository.Name, "master").Result;
+     var licenseExists = response.Tree.Any(
+          t => t.Path.StartsWith("LICENSE")
+               && t.Mode == Octokit.FileMode.File);
+
+     if (!licenseExists)
+     {
+         Console.WriteLine("No license found for " + repository.Name);
+     }
+   }
+   catch (AggregateException ex)
+   {
+     Console.WriteLine("Skipping due to bad life decisions: " + repository.Name);
    }
 }
