@@ -6,12 +6,12 @@ foreach (var repository in repositories)
 {
    var name = repository.Name;
    if (name.StartsWith("public-repo-")
-	    || name.StartsWith("my-awesome-repo")
-	    || name.StartsWith("repo-to-delete-")
+		|| name.StartsWith("repo-to-delete-")
 		|| name.StartsWith("repo-with-")
 		|| name.StartsWith("repo-without-")
 		|| name.StartsWith("private-repo-")
-		|| name.StartsWith("source-repo-"))
+		|| name.StartsWith("source-repo-")
+		|| name.StartsWith("existing-repo-"))
    {
        var login = repository.Owner.Login;
        Console.WriteLine("Deleting repository {0}/{1}", login, name);
